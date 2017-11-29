@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="taskJob" class="com.oursnail.common.task.AttendCheckTask"/>
+    <bean id="taskJob2" class="com.oursnail.wechat.task.QuartzJob"/>
+
+
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskJob"/>
+        <property name="targetMethod" value="checkAttend"/>
+    </bean>
+    <bean id="jobDetail2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskJob2"/>
+        <property name="targetMethod" value="workForToken"/>
+    </bean>
+
+    <bean id="attendCheck" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail"/>
+        <property name="cronExpression">
+            <!--<value>0 0 23 * * ? </value>-->
+            <value>0 0/1 * * * ?</value>
+        </property>
+    </bean>
+    <bean id="tokenCheck" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail2"/>
+        <property name="cronExpression">
+            <!--<value>0/60 * * * * ?</value>-->
+            <value>0 0/50 0/2 * * ? </value>
+        </property>
+    </bean>
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="attendCheck"/>
+                <ref bean="tokenCheck"/>
+            </list>
+        </property>
+    </bean>
+</beans>

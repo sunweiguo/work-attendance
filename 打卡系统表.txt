@@ -1,0 +1,109 @@
+#t_attend表
+CREATE TABLE `t_attend` (
+`id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`user_id`  bigint(20) NOT NULL ,
+`attend_date`  date NULL DEFAULT NULL ,
+`attend_week`  tinyint(2) NULL DEFAULT NULL ,
+`attend_morning`  time NULL DEFAULT NULL ,
+`absence`  int(10) NULL DEFAULT NULL ,
+`status`  tinyint(2) NOT NULL DEFAULT 1 COMMENT '1 正常 2 异常' ,
+`attend_evening`  time NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=DYNAMIC
+;
+
+#t_permission表,两种权限：user:* 1和admin:* 2
+CREATE TABLE `t_permission` (
+`id`  int(11) NOT NULL AUTO_INCREMENT ,
+`permission_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`role_id`  int(11) NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=4
+ROW_FORMAT=DYNAMIC
+;
+INSERT INTO t_permission(permission_name,role_id) VALUES("user:*",1);
+INSERT INTO t_permission(permission_name,role_id) VALUES("admin:*",2);
+
+
+#t_register表
+CREATE TABLE `t_register` (
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`code`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`state`  tinyint(2) NULL DEFAULT NULL ,
+`user_id`  bigint(20) NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=24
+ROW_FORMAT=DYNAMIC
+;
+
+
+#t_role表,两种角色：user和admin
+CREATE TABLE `t_role` (
+`id`  int(11) NOT NULL AUTO_INCREMENT ,
+`role_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=3
+ROW_FORMAT=DYNAMIC
+;
+INSERT INTO t_role(role_name) VALUES("user");
+INSERT INTO t_role(role_name) VALUES("admin");
+
+
+#t_user表
+CREATE TABLE t_user(
+`id`  bigint(20) NOT NULL AUTO_INCREMENT ,
+`username`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`password`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`headImgUrl`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`phoneNumber`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`register_date`  datetime NOT NULL ,
+`sex`  tinyint(2) NULL DEFAULT NULL ,
+`email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`role_Id`  int(11) NOT NULL DEFAULT 1 ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=26
+ROW_FORMAT=DYNAMIC
+;
+
+#用户授权时用的表
+CREATE TABLE `wx_openId_userId` (
+`wxId`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'openId与userId映射表Id' ,
+`wx_code`  varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '获取网页授权access_token的票据' ,
+`access_token`  varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '网页授权access_token' ,
+`openId`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '微信用户的 openId' ,
+`userId`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '微信用户的 userId' ,
+`createTime`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+PRIMARY KEY (`wxId`),
+UNIQUE INDEX `t_wechat_oauth_code_code` (`wx_code`) USING BTREE 
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
+ROW_FORMAT=DYNAMIC
+;
+
+
+/usr/local/activeServer/apache-activemq-5.15.2/bin
+
+
+/usr/local/apache-tomcat-8.5.20
+
+/usr/local/jdk1.8.0_144
+
+
+
+

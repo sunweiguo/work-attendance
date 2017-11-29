@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oursnail.wechat.dao.WxOpenIdUserIdMapper" >
+  <resultMap id="BaseResultMap" type="com.oursnail.wechat.entity.WxOpenIdUserId" >
+    <id column="wxId" property="wxid" jdbcType="VARCHAR" />
+    <result column="access_token" property="accessToken" jdbcType="VARCHAR" />
+    <result column="openId" property="openid" jdbcType="VARCHAR" />
+    <result column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wxId, access_token, openId, userId, createTime
+  </sql>
+  <select id="getWxOpenIdUserIdByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from wx_openid_userid
+    where openId = #{openid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_openid_userid
+    where wxId = #{wxid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from wx_openid_userid
+    where wxId = #{wxid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.oursnail.wechat.entity.WxOpenIdUserId" >
+    insert into wx_openid_userid (wxId, access_token,
+      openId, userId, createTime
+      )
+    values (#{wxid,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR},
+      #{openid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.oursnail.wechat.entity.WxOpenIdUserId" >
+    insert into wx_openid_userid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wxid != null" >
+        wxId,
+      </if>
+      <if test="accessToken != null" >
+        access_token,
+      </if>
+      <if test="openid != null" >
+        openId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wxid != null" >
+        #{wxid,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null" >
+        #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oursnail.wechat.entity.WxOpenIdUserId" >
+    update wx_openid_userid
+    <set >
+      <if test="accessToken != null" >
+        access_token = #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        openId = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where wxId = #{wxid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oursnail.wechat.entity.WxOpenIdUserId" >
+    update wx_openid_userid
+    set
+      access_token = #{accessToken,jdbcType=VARCHAR},
+      openId = #{openid,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where wxId = #{wxid,jdbcType=VARCHAR}
+  </update>
+</mapper>

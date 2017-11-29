@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oursnail.wechat.dao.WxAttendMapper" >
+  <resultMap id="BaseResultMap" type="com.oursnail.wechat.entity.WxAttend" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="attend_date" property="attendDate" jdbcType="DATE" />
+    <result column="attend_week" property="attendWeek" jdbcType="TINYINT" />
+    <result column="attend_morning" property="attendMorning" jdbcType="TIME" />
+    <result column="absence" property="absence" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="attend_evening" property="attendEvening" jdbcType="TIME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, attend_date, attend_week, attend_morning, absence, status, attend_evening
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from wx_attend
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from wx_attend
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.oursnail.wechat.entity.WxAttend" >
+    insert into wx_attend (id, user_id, attend_date, 
+      attend_week, attend_morning, absence, 
+      status, attend_evening)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{attendDate,jdbcType=DATE}, 
+      #{attendWeek,jdbcType=TINYINT}, #{attendMorning,jdbcType=TIME}, #{absence,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{attendEvening,jdbcType=TIME})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oursnail.wechat.entity.WxAttend" >
+    insert into wx_attend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="attendDate != null" >
+        attend_date,
+      </if>
+      <if test="attendWeek != null" >
+        attend_week,
+      </if>
+      <if test="attendMorning != null" >
+        attend_morning,
+      </if>
+      <if test="absence != null" >
+        absence,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="attendEvening != null" >
+        attend_evening,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="attendDate != null" >
+        #{attendDate,jdbcType=DATE},
+      </if>
+      <if test="attendWeek != null" >
+        #{attendWeek,jdbcType=TINYINT},
+      </if>
+      <if test="attendMorning != null" >
+        #{attendMorning,jdbcType=TIME},
+      </if>
+      <if test="absence != null" >
+        #{absence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attendEvening != null" >
+        #{attendEvening,jdbcType=TIME},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oursnail.wechat.entity.WxAttend" >
+    update wx_attend
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="attendDate != null" >
+        attend_date = #{attendDate,jdbcType=DATE},
+      </if>
+      <if test="attendWeek != null" >
+        attend_week = #{attendWeek,jdbcType=TINYINT},
+      </if>
+      <if test="attendMorning != null" >
+        attend_morning = #{attendMorning,jdbcType=TIME},
+      </if>
+      <if test="absence != null" >
+        absence = #{absence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attendEvening != null" >
+        attend_evening = #{attendEvening,jdbcType=TIME},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oursnail.wechat.entity.WxAttend" >
+    update wx_attend
+    set user_id = #{userId,jdbcType=VARCHAR},
+      attend_date = #{attendDate,jdbcType=DATE},
+      attend_week = #{attendWeek,jdbcType=TINYINT},
+      attend_morning = #{attendMorning,jdbcType=TIME},
+      absence = #{absence,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      attend_evening = #{attendEvening,jdbcType=TIME}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectTodaySignRecord" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from wx_attend
+    where user_id = #{userId}
+    and attend_date = CURDATE()
+  </select>
+</mapper>

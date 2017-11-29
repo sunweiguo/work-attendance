@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oursnail.attend.dao.AttendMapper" >
+  <resultMap id="BaseResultMap" type="com.oursnail.attend.entity.Attend" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="attend_date" property="attendDate" jdbcType="DATE" />
+    <result column="attend_week" property="attendWeek" jdbcType="TINYINT" />
+    <result column="attend_morning" property="attendMorning" jdbcType="TIME" />
+    <result column="absence" property="absence" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="attend_evening" property="attendEvening" jdbcType="TIME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, attend_date, attend_week, attend_morning, absence, status, attend_evening
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_attend
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_attend
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.oursnail.attend.entity.Attend" >
+    insert into t_attend (id, user_id, attend_date, 
+      attend_week, attend_morning, absence, 
+      status, attend_evening)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{attendDate,jdbcType=DATE}, 
+      #{attendWeek,jdbcType=TINYINT}, #{attendMorning,jdbcType=TIME}, #{absence,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{attendEvening,jdbcType=TIME})
+  </insert>
+  <insert id="insertSelective" parameterType="com.oursnail.attend.entity.Attend" >
+    insert into t_attend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="attendDate != null" >
+        attend_date,
+      </if>
+      <if test="attendWeek != null" >
+        attend_week,
+      </if>
+      <if test="attendMorning != null" >
+        attend_morning,
+      </if>
+      <if test="absence != null" >
+        absence,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="attendEvening != null" >
+        attend_evening,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="attendDate != null" >
+        #{attendDate,jdbcType=DATE},
+      </if>
+      <if test="attendWeek != null" >
+        #{attendWeek,jdbcType=TINYINT},
+      </if>
+      <if test="attendMorning != null" >
+        #{attendMorning,jdbcType=TIME},
+      </if>
+      <if test="absence != null" >
+        #{absence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attendEvening != null" >
+        #{attendEvening,jdbcType=TIME},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.oursnail.attend.entity.Attend" >
+    update t_attend
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="attendDate != null" >
+        attend_date = #{attendDate,jdbcType=DATE},
+      </if>
+      <if test="attendWeek != null" >
+        attend_week = #{attendWeek,jdbcType=TINYINT},
+      </if>
+      <if test="attendMorning != null" >
+        attend_morning = #{attendMorning,jdbcType=TIME},
+      </if>
+      <if test="absence != null" >
+        absence = #{absence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="attendEvening != null" >
+        attend_evening = #{attendEvening,jdbcType=TIME},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.oursnail.attend.entity.Attend" >
+    update t_attend
+    set user_id = #{userId,jdbcType=BIGINT},
+      attend_date = #{attendDate,jdbcType=DATE},
+      attend_week = #{attendWeek,jdbcType=TINYINT},
+      attend_morning = #{attendMorning,jdbcType=TIME},
+      absence = #{absence,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      attend_evening = #{attendEvening,jdbcType=TIME}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="countByCondition" resultType="int"  >
+    select
+    count(0)
+    from t_attend
+    where user_id = #{userId}
+    <if test="startDate != null and endDate != null" >
+      AND attend_date BETWEEN  #{startDate} AND  #{endDate}
+    </if>
+    <if test="status != null" >
+      AND  status = #{status}
+    </if>
+  </select>
+
+  <select id="getAttendPage" resultMap="BaseResultMap"  >
+    SELECT
+    <include refid="Base_Column_List" />
+    from t_attend
+    where user_id = #{userId}
+    <if test="startDate !=null and endDate !=null" >
+      AND attend_date BETWEEN  #{startDate} AND  #{endDate}
+    </if>
+    <if test="status != null" >
+      AND  status = #{status}
+    </if>
+    ORDER by attend_date DESC
+    LIMIT  #{startRow} , #{pageSize}
+  </select>
+
+  <select id="selectTodayAbsence" resultType="Long">
+    SELECT
+    u.id
+    from t_user u WHERE u.id not in(
+      SELECT  a.user_id from t_attend a
+      WHERE a.attend_date = CURDATE()
+    )
+  </select>
+
+  <select id="selectTodayEveningAbsence" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from t_attend
+    where
+    attend_date = CURDATE()
+    and attend_evening is null
+    and status = 1
+    and attend_week NOT in(6,7)
+  </select>
+
+  <insert id="batchInsert" parameterType="list">
+    insert into t_attend
+    (id,user_id,attend_date,attend_week,absence,status)
+     values
+     <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.id},#{item.userId},#{item.attendDate},#{item.attendWeek},#{item.absence},#{item.status})
+     </foreach>
+  </insert>
+
+  <select id="selectTodaySignRecord" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from t_attend
+    where user_id = #{userId}
+    and attend_date = CURDATE()
+  </select>
+
+</mapper>
